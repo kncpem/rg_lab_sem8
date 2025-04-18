@@ -1,7 +1,7 @@
 import os
 
 # Read input data from file
-with open(f'in_pathu.txt', 'r') as f:
+with open(f'in.txt', 'r') as f:
     cc = [[float(j) for j in i.split('\t')] for i in f.read().strip().split('\n')]
 
 n = len(cc)  # Number of rows
@@ -10,8 +10,8 @@ m = len(cc[0])  # Number of columns
 # Constants
 g = 9.8  # Gravitational acceleration (m/s²)
 pi = 3.14  # Pi approximation
-draft = 20.8  # Ship draft (m)
-L = 316  # Ship length (m)
+draft = 6.75  # Ship draft (m)
+L = 172  # Ship length (m)
 rho = 1.025  # Water density (kg/m³), used in later calculations
 
 # Calculate wave frequency squared
@@ -64,7 +64,7 @@ for i in range(1, m):
     xaxis.append(wsq * b / g)  # Frequency parameter
     
     # Read added mass coefficients from data files
-    with open(f'DAMPING/{int(beta[-1] * 10)}.txt', 'r') as f:
+    with open(f'data/{int(beta[-1] * 10)}.txt', 'r') as f:
         con = [[0 if j == '' else float(j) for j in i.split('\t')] for i in f.read().split('\n')]
         
         # Find appropriate ratio index
@@ -82,7 +82,7 @@ for i in range(1, m):
         a_cf.append(y)  # Store added mass coefficient
     
     # Read damping coefficients from data files
-    with open(f'data/{int(beta[-1] * 10)}.txt', 'r') as f:
+    with open(f'DAMPING/{int(beta[-1] * 10)}.txt', 'r') as f:
         con = [[0 if j == '' else float(j) for j in i.split('\t')] for i in f.read().split('\n')]
         
         # Find appropriate ratio index
@@ -99,12 +99,10 @@ for i in range(1, m):
         
         d_cf.append(y)  # Store damping coefficient
 
-# Unused variable (can be removed)
-ffff = 0
 
-# Read a3 coefficients for heave calculations
-with open('a3.txt', 'r') as f:
-    aa = [float(i) for i in f.read().strip().split('\n\n')[0].split('\n')[0].split('\t')]
+aa = list(a_cf[::-1])
+aa.append(0)
+aa = list(aa[::-1])
 
 # Initialize variables for heave calculations
 p1 = 0       # Unused variable
@@ -118,9 +116,9 @@ for idx, i in enumerate(cc[0][1:]):
     a55 += (aa[idx] + aa[idx + 1]) / 2 * (i - cc[0][idx]) * sa[idx] * rho * (L / 2 - i) ** 2
     i_mass += (i - cc[0][idx]) * sa[idx] * rho * (L / 2 - i) ** 2
 
-# Read b3 coefficients for damping calculations
-with open('a3.txt', 'r') as f:
-    aa = [float(i) for i in f.read().strip().split('\n\n')[0].split('\n')[1].split('\t')]
+aa = list(d_cf[::-1])
+aa.append(0)
+aa = list(aa[::-1])
 
 # Initialize variables for damping calculations
 p1 = 0  # Unused variable
@@ -155,10 +153,6 @@ with open('output.txt', 'w') as f:
     print('\t'.join([str(round(i, 2)) for i in a_cf]), file=f)
     print('\t'.join([str(round(i, 2)) for i in d_cf]), file=f)
 
-    print(f'\n{round(a3, 2)}\n{round(a55, 2)}\n{round(b3, 2)}\n{round(b55, 2)}\n', file=f)
-
-    # wpa = wpa[0] + wpa[:0:-1]
-    print(round(i_mass, 2), file=f)
-    print('\n', file=f)
+    print(f'\n{a3:.3g}\n{a55:.3g}\n{b3:.4g}\n{b55:.3g}\n{i_mass:.3g}\n', file=f)
 
     print('\n'.join([f"{str(round(i, 2))}\t{str(round(i*rho*g, 2))}" for i in wpa]), file=f)
