@@ -64,7 +64,7 @@ for i in range(1, m):
     xaxis.append(wsq * b / g)  # Frequency parameter
     
     # Read added mass coefficients from data files
-    with open(f'data/{int(beta[-1] * 10)}.txt', 'r') as f:
+    with open(f'DAMPING/{int(beta[-1] * 10)}.txt', 'r') as f:
         con = [[0 if j == '' else float(j) for j in i.split('\t')] for i in f.read().split('\n')]
         
         # Find appropriate ratio index
@@ -82,7 +82,7 @@ for i in range(1, m):
         a_cf.append(y)  # Store added mass coefficient
     
     # Read damping coefficients from data files
-    with open(f'DAMPING/{int(beta[-1] * 10)}.txt', 'r') as f:
+    with open(f'data/{int(beta[-1] * 10)}.txt', 'r') as f:
         con = [[0 if j == '' else float(j) for j in i.split('\t')] for i in f.read().split('\n')]
         
         # Find appropriate ratio index
