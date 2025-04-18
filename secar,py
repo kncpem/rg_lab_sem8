@@ -1,7 +1,7 @@
 import os
 
 # Read input data from file
-with open(f'in.txt', 'r') as f:
+with open(f'in_pathu.txt', 'r') as f:
     cc = [[float(j) for j in i.split('\t')] for i in f.read().strip().split('\n')]
 
 n = len(cc)  # Number of rows
@@ -10,8 +10,8 @@ m = len(cc[0])  # Number of columns
 # Constants
 g = 9.8  # Gravitational acceleration (m/s²)
 pi = 3.14  # Pi approximation
-draft = 7.8  # Ship draft (m)
-L = 120.4  # Ship length (m)
+draft = 20.8  # Ship draft (m)
+L = 316  # Ship length (m)
 rho = 1.025  # Water density (kg/m³), used in later calculations
 
 # Calculate wave frequency squared
@@ -75,8 +75,8 @@ for i in range(1, m):
         y = -1     # Default value
         
         for row in con:
-            if abs(b_by_t[-1] - row[tem * 2]) < dd:
-                dd = abs(b_by_t[-1] - row[tem * 2])
+            if abs(xaxis[-1] - row[tem * 2]) < dd:
+                dd = abs(xaxis[-1] - row[tem * 2])
                 y = row[tem * 2 + 1]
         
         a_cf.append(y)  # Store added mass coefficient
@@ -93,8 +93,8 @@ for i in range(1, m):
         y = -1     # Default value
         
         for row in con:
-            if abs(b_by_t[-1] - row[tem * 2]) < dd:
-                dd = abs(b_by_t[-1] - row[tem * 2])
+            if abs(xaxis[-1] - row[tem * 2]) < dd:
+                dd = abs(xaxis[-1] - row[tem * 2])
                 y = row[tem * 2 + 1]
         
         d_cf.append(y)  # Store damping coefficient
@@ -155,4 +155,10 @@ with open('output.txt', 'w') as f:
     print('\t'.join([str(round(i, 2)) for i in a_cf]), file=f)
     print('\t'.join([str(round(i, 2)) for i in d_cf]), file=f)
 
-    print(f'{round(a3, 2)}\n{round(a55, 2)}\n{round(b3, 2)}\n{round(b55, 2)}', file=f)
+    print(f'\n{round(a3, 2)}\n{round(a55, 2)}\n{round(b3, 2)}\n{round(b55, 2)}\n', file=f)
+
+    # wpa = wpa[0] + wpa[:0:-1]
+    print(round(i_mass, 2), file=f)
+    print('\n', file=f)
+
+    print('\n'.join([f"{str(round(i, 2))}\t{str(round(i*rho*g, 2))}" for i in wpa]), file=f)
