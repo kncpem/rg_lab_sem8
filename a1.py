@@ -96,8 +96,10 @@ st.set_page_config(page_title="Ship Hydrodynamics Calculator", layout="centered"
 st.title("🚢 Ship Hydrodynamics Calculator")
 
 st.sidebar.header("Ship Parameters")
-L = st.sidebar.number_input("Enter Ship Length (L) in meters", value=122.0, step=0.1)
-draft = st.sidebar.number_input("Enter Ship Draft in meters", value=7.8, step=0.1)
+L = st.sidebar.number_input("Enter Ship Length (L) in meters", value=122.0, step=1)
+draft = st.sidebar.number_input("Enter Ship Draft (T) in meters", value=7.8, step=0.1)
+lambda_l_ratio = st.sidebar.number_input("Enter the value of λ/L", value=1.2, step=0.1)
+bml = st.sidebar.number_input("Enter Ship BML", value=0, step=1)
 
 uploaded_file = st.file_uploader("Upload Offset Table (.txt)", type=["txt"])
 
